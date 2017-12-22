@@ -14,8 +14,7 @@ var MatchGame = {};
  $(document).ready(function() {
 
    var values = MatchGame.generateCardValues();
-   var $game = $('#game');
-   MatchGame.renderCards(values, $game);
+   MatchGame.renderCards(values, $('#game'));
 
  });
 
@@ -47,7 +46,7 @@ MatchGame.generateCardValues = function () {
     mix.push(array[index]);
     array.splice(index, 1);
   }
-  console.log(mix);
+  // console.log(mix);
   return mix;
 };
 
@@ -97,6 +96,9 @@ MatchGame.renderCards = function(cardValues, $game) {
 MatchGame.flipCard = function($card, $game) {
 
   if ($card.data('flipped')) {
+    return
+  }
+  if ($game.data('flippedCards').length >= 2) {
     return
   }
   $card.css('background-color', $card.data('color'));
