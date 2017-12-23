@@ -119,6 +119,8 @@ MatchGame.flipCard = function($card, $game, $score, all_cards) {
 
     setTimeout(function() {
         if ($game.data('flippedCards')[0].data('value') === $game.data('flippedCards')[1].data('value')) {
+        var sound_check = new Audio("./resources/sounds/check.wav"); // buffers automatically when created
+        sound_check.play();
         var new_colors = {
           'backgroundColor': 'rgb(153, 153, 153)',
           'color': 'rgb(204, 204, 204)'
@@ -127,10 +129,12 @@ MatchGame.flipCard = function($card, $game, $score, all_cards) {
         $game.data('flippedCards')[1].css(new_colors);
         $game.data('total_cards',$game.data('total_cards')+2);
         if ($game.data('total_cards') == 16) {
-          console.log('WIN');
+          // console.log('WIN');
           MatchGame.win($game, $score, all_cards);
         }
       } else {
+        // var sound_wrong = new Audio("./resources/sounds/wrong.mp3"); // buffers automatically when created
+        // sound_wrong.play();
         $game.data('flippedCards')[0].css('background-color', 'rgb(32, 64, 86)');
         $game.data('flippedCards')[1].css('background-color', 'rgb(32, 64, 86)');
         $game.data('flippedCards')[0].data('flipped', false);
