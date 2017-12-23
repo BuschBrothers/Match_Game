@@ -13,8 +13,8 @@ var MatchGame = {};
 
  $(document).ready(function() {
 
-   var values = MatchGame.generateCardValues();
-   MatchGame.renderCards(values, $('#game'));
+   // var values = MatchGame.generateCardValues();
+   MatchGame.renderCards(MatchGame.generateCardValues(), $('#game'));
 
  });
 
@@ -59,6 +59,7 @@ MatchGame.renderCards = function(cardValues, $game) {
   $game.empty();
 
   $game.data('flippedCards',[]);
+  $game.data('score', 0);
 
   var colors = [
               'hsl(25, 85%, 65%)',
@@ -71,6 +72,8 @@ MatchGame.renderCards = function(cardValues, $game) {
               'hsl(360, 85%, 65%)'
               ];
 
+  var all_cards = [];
+
   for(var i = 0; i<cardValues.length; i++) {
     var $card = $('<div class="card col-xs-3"></div>');
     var prop = {
@@ -80,10 +83,15 @@ MatchGame.renderCards = function(cardValues, $game) {
     };
     $card.data(prop);
     $game.append($card);
+    all_cards.push($card);
+    // console.log(all_cards[i].data('value'));
   }
 
+  var $score = $('<span style="font-weight: bold;">0</span>');
+  $('.instructions').append($score);
+
   $('.card').click(function() {
-    MatchGame.flipCard($(this), $game);
+    MatchGame.flipCard($(this), $game, $score, all_cards);
   });
 
 };
@@ -93,7 +101,7 @@ MatchGame.renderCards = function(cardValues, $game) {
   Updates styles on flipped cards depending whether they are a match or not.
  */
 
-MatchGame.flipCard = function($card, $game) {
+MatchGame.flipCard = function($card, $game, $score, all_cards) {
 
   if ($card.data('flipped')) {
     return
@@ -123,15 +131,45 @@ MatchGame.flipCard = function($card, $game) {
         $game.data('flippedCards')[1].data('flipped', false);
         $game.data('flippedCards')[0].text('');
         $game.data('flippedCards')[1].text('');
+        $game.data('score',$game.data('score')+1);
+        console.log($game.data('score'));
+        $score.text($game.data('score'));
+        if ($game.data('score') > 10) {
+          $game.data('score', 0)
+          MatchGame.reset($score, all_cards);
+        }
       }
       $game.data('flippedCards', []);
-
     }, 400);
   }
 
 };
 
+MatchGame.reset = function($score, all_cards) {
+  $score.text('0');
 
+  var colors = [
+              'hsl(25, 85%, 65%)',
+              'hsl(55, 85%, 65%)',
+              'hsl(90, 85%, 65%)',
+              'hsl(160, 85%, 65%)',
+              'hsl(220, 85%, 65%)',
+              'hsl(265, 85%, 65%)',
+              'hsl(310, 85%, 65%)',
+              'hsl(360, 85%, 65%)'
+              ];
+
+  var new_values = MatchGame.generateCardValues();
+  console.log(new_values);
+  for (var i = 0; i < all_cards.length; i++) {
+    all_cards[i].data('flipped', false);
+    all_cards[i].css('background-color', 'rgb(32, 64, 86)');
+    all_cards[i].css('color', 'white');
+    all_cards[i].text('');
+    all_cards[i].data('value', new_values[i]);
+    all_cards[i].data('color', colors[new_values[i]-1]);
+  }
+};
 
 
 
