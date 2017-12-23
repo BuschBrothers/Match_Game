@@ -3,7 +3,7 @@ html {
   font-size: 14px;
   font-family: 'Work Sans', sans-serif;
   background-color: rgb(255, 242, 242);
-  margin: 5.25rem auto;
+  margin: 1.5rem auto;
 }
 
 body {
@@ -54,11 +54,3 @@ p {
 .card:hover {
   cursor: pointer;
 }
-
-
-
-
-
-
-
-/*  */
