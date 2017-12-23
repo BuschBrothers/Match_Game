@@ -60,6 +60,7 @@ MatchGame.renderCards = function(cardValues, $game) {
 
   $game.data('flippedCards',[]);
   $game.data('score', 0);
+  $game.data('total_cards', 0);
 
   var colors = [
               'hsl(25, 85%, 65%)',
@@ -124,6 +125,11 @@ MatchGame.flipCard = function($card, $game, $score, all_cards) {
         }
         $game.data('flippedCards')[0].css(new_colors);
         $game.data('flippedCards')[1].css(new_colors);
+        $game.data('total_cards',$game.data('total_cards')+2);
+        if ($game.data('total_cards') == 16) {
+          console.log('WIN');
+          MatchGame.win($game, $score, all_cards);
+        }
       } else {
         $game.data('flippedCards')[0].css('background-color', 'rgb(32, 64, 86)');
         $game.data('flippedCards')[1].css('background-color', 'rgb(32, 64, 86)');
@@ -132,11 +138,10 @@ MatchGame.flipCard = function($card, $game, $score, all_cards) {
         $game.data('flippedCards')[0].text('');
         $game.data('flippedCards')[1].text('');
         $game.data('score',$game.data('score')+1);
-        console.log($game.data('score'));
+        // console.log($game.data('score'));
         $score.text($game.data('score'));
         if ($game.data('score') > 10) {
-          $game.data('score', 0)
-          MatchGame.reset($score, all_cards);
+          MatchGame.lose($game, $score, all_cards);
         }
       }
       $game.data('flippedCards', []);
@@ -145,9 +150,10 @@ MatchGame.flipCard = function($card, $game, $score, all_cards) {
 
 };
 
-MatchGame.reset = function($score, all_cards) {
+MatchGame.reset = function($game, $score, all_cards) {
   $score.text('0');
-
+  $game.data('score', 0);
+  $game.data('total_cards', 0);
   var colors = [
               'hsl(25, 85%, 65%)',
               'hsl(55, 85%, 65%)',
@@ -160,7 +166,7 @@ MatchGame.reset = function($score, all_cards) {
               ];
 
   var new_values = MatchGame.generateCardValues();
-  console.log(new_values);
+  // console.log(new_values);
   for (var i = 0; i < all_cards.length; i++) {
     all_cards[i].data('flipped', false);
     all_cards[i].css('background-color', 'rgb(32, 64, 86)');
@@ -171,6 +177,25 @@ MatchGame.reset = function($score, all_cards) {
   }
 };
 
+MatchGame.win = function($game, $score, all_cards) {
 
+  for (var i = 0; i < all_cards.length; i++) {
+    all_cards[i].css('background-color', 'rgb(255, 201, 0)'); // dorado
+    all_cards[i].css('color', 'white');
+  }
+  setTimeout(function() {
+    MatchGame.reset($game, $score, all_cards);
+    }, 3000);
+};
+
+MatchGame.lose = function($game, $score, all_cards) {
+
+  for (var i = 0; i < all_cards.length; i++) {
+    all_cards[i].css('background-color', 'rgb(192, 0, 10)'); // dorado
+  }
+  setTimeout(function() {
+    MatchGame.reset($game, $score, all_cards);
+    }, 3000);
+};
 
 //
