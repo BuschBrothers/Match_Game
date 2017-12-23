@@ -182,20 +182,27 @@ MatchGame.win = function($game, $score, all_cards) {
   for (var i = 0; i < all_cards.length; i++) {
     all_cards[i].css('background-color', 'rgb(255, 201, 0)'); // dorado
     all_cards[i].css('color', 'white');
+    all_cards[i].data('flipped', true);
   }
+  var sound_lose = new Audio("./resources/sounds/win.wav"); // buffers automatically when created
+  sound_lose.play();
   setTimeout(function() {
     MatchGame.reset($game, $score, all_cards);
-    }, 3000);
+  }, 8000);
 };
 
 MatchGame.lose = function($game, $score, all_cards) {
 
   for (var i = 0; i < all_cards.length; i++) {
-    all_cards[i].css('background-color', 'rgb(192, 0, 10)'); // dorado
+    all_cards[i].css('background-color', 'rgb(192, 0, 10)'); // rojo
+    all_cards[i].css('color', 'black');
+    all_cards[i].data('flipped', true);
   }
+  var sound_lose = new Audio("./resources/sounds/lose.wav"); // buffers automatically when created
+  sound_lose.play();
   setTimeout(function() {
     MatchGame.reset($game, $score, all_cards);
-    }, 3000);
+  }, 2000);
 };
 
 //
